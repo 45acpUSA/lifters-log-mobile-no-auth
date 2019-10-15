@@ -1,0 +1,2 @@
+class OlympicLiftsController < ApplicationController
+end

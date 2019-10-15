@@ -1,0 +1,2 @@
+class CoreLift < ApplicationRecord
+end

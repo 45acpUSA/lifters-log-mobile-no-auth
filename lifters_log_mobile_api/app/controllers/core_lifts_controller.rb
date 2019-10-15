@@ -1,0 +1,2 @@
+class CoreLiftsController < ApplicationController
+end

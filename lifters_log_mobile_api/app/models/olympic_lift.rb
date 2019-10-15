@@ -1,0 +1,2 @@
+class OlympicLift < ApplicationRecord
+end
