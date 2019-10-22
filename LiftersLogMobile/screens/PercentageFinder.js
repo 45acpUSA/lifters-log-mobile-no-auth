@@ -1,6 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
 import t from 'tcomb-form-native'
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component'
+import { Button } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Form = t.form.Form
 
@@ -11,10 +14,6 @@ const Attributes = t.struct({
   highestPercent: t.Number,
 })
 
-const displayKilos = t.struct({
-  kilos: t.Boolean
-})
-
 const options = {}
 
 export default class PercentageFinder extends React.Component {
@@ -23,21 +22,31 @@ export default class PercentageFinder extends React.Component {
     this.state = {
       displayTable: false,
       kilos: false,
+      weightsKg: [],
+      tableHead: ['Percentage', 'Weight (in lbs)'],
+      tableData: [],
     }
   }
-  handlePress = () => {
-    let attributes = this.refs.form.getValue()
-    if (attributes) {
-      this.handleTableData(attributes)
+
+  handlePercentFormPress = () => {
+    let values = this.refs.percentageForm.getValue()
+    if (values) {
+      this.handleTableData(values)
       this.setState({
         displayTable: !this.state.displayTable
       })
     }
   }
+  
+  handleKiloToggle = value => {
+    if (value) {
+      this.handleTableDisplay(this.state.tableData)
+    }
+  }
 
   handleTableData = attributes => {
     const { weight, inKilos, lowestPercent, highestPercent } = attributes
-    const { kilos } = this.state
+    const { weightsKg, tableHead, tableData } = this.state
     let newWeight = parseInt(weight)
     let high = parseInt(highestPercent)
     let low = parseInt(lowestPercent)
@@ -47,66 +56,100 @@ export default class PercentageFinder extends React.Component {
       for (let i=low; i<=high; i+=incrementor) {
         let percent = `${i}%`
         tData.push(percent)
+
         let pounds = inKilos ? `${Math.ceil((newWeight * 2.2) * (i/100))} lbs` : `${Math.ceil(newWeight * (i/100))} lbs`
         tData.push(pounds)
-        if (kilos) {
-          let kilos = inKilos ? `${Math.ceil(newWeight * (i/100))} kgs` : `${Math.ceil((newWeight / 2.2) * (i/100))} kgs`
-          tData.push(kilos)
-        }
+
+        let kilos = inKilos ? `${Math.ceil(newWeight * (i/100))} kgs` : `${Math.ceil((newWeight / 2.2) * (i/100))} kgs`
+        weightsKg.push(kilos)
       }
-      return tData.map((value, index) => {
-        if (kilos) {
-          if (index % 3 === 0) {
-            return (
-              <tr key={ index }>
-                <td>{ value }</td>
-                <td>{ tData[index+1] }</td>
-                <td>{ tData[index+2] }</td>
-              </tr>
-            )
-          }
+      this.handleTableDisplay(tData)
+    }
+  }
+
+  handleTableDisplay = array => {
+    const { weightsKg, tableHead, tableData } = this.state
+    if (tableData.length % 2 !== 0) {
+      tableHead.push('Weight (in kgs)')
+      let newTData = [].concat(...array)
+      let temp = []
+      let count = 0
+      newTData.map((value, index) => {
+        if (index % 2 > 0) {
+          temp.push(value)
+          temp.push(weightsKg[count])
+          tableData.push(temp)
+          temp = []
+          count ++
         } else {
-          if (index % 2 === 0) {
-            return (
-              <tr key={ index }>
-                <td>{ value }</td>
-                <td>{ tData[index+1] }</td>
-              </tr>
-            )
-          }
+          temp.push(value)
+        }
+      })
+    } else {
+      array.map((value, index) => {
+        let temp = []
+        if (index % 2 === 0) {
+          let nextValue = array[index+1]
+          Array.prototype.push.apply(temp, [value, nextValue])
+          tableData.push(temp)
+          temp = []
         }
       })
     }
+    this.handleClearForm()
+    this.setState({ tableData })
   }
     
   handleClearForm = () => {
     this.setState({
-      attributes: {
-        weight: '',
-        kilos: '',
-        inKilos: '',
-        lowestPercent: '',
-        highestPercent: ''
-      }
+      tableHead: ['Percentage', 'Weight (in lbs)'],
+      tableData: [],
     })
+    console.log(this.state.tableData)
   }
 
   render() {
+    const tableDisplay = () => {
+      return this.state.tableData.map((rowData, index) => (
+        <Row
+          key={ index }
+          data={ rowData }
+          style={[styles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+          textStyle={ styles.tableText }
+        />
+      ))
+    }
+
     return (
       <View>
         {!this.state.displayTable &&
-          <View style={styles.container}>
+          <View style={ styles.container }>
             <Form
-              ref="form"
+              ref="percentageForm"
               type={ Attributes }
             />
-            <TouchableHighlight style={styles.button} onPress={ this.handlePress } underlayColor='#99d9f4'>
-              <Text style={styles.buttonText}>Submit</Text>
+            <TouchableHighlight style={ styles.button } onPress={ this.handlePercentFormPress } underlayColor='#99d9f4'>
+              <Text style={ styles.buttonText }>Submit</Text>
             </TouchableHighlight>
           </View>
         }
         {this.state.displayTable &&
-          <Text>Hello World</Text>
+        <ScrollView>
+          <View style={ styles.tableContainer }>
+            <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+              <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
+              { tableDisplay() }
+            </Table>
+            <View style={ styles.kiloContainer }>
+              <Text>Show Kilos</Text>
+              <Form
+                ref="kiloToggle"
+                type={ t.Boolean }
+                onChange={ this.handleKiloToggle }
+              />
+            </View>
+          </View>
+        </ScrollView>
         }
       </View>
     )
@@ -134,5 +177,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
-  }
+  },
+  kiloContainer: {
+    justifyContent: 'flex-end',
+    padding: 20,
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+  },
+  tableContainer: {
+    flex: 1,
+    padding: 16,
+    paddingTop: 30,
+    backgroundColor: '#fff'
+  },
+  tableHead: {
+    height: 40,
+    backgroundColor: '#f1f8ff'
+  },
+  tableText: {
+    margin: 6
+  },
+  row: {
+    height: 40,
+    backgroundColor: '#E7E6E1'
+  },
 })
