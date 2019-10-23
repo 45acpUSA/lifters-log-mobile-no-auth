@@ -10,25 +10,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
   return (
-    <ImageBackground source={require('../assets/images/background.jpg')} style={{width: '100%', height: '100%'}}>
+    <ImageBackground source={require('../assets/images/background.png')} style={{width: '100%', height: '100%'}}>
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
+          contentContainerStyle={styles.contentContainer}
+        >
           <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
+            <Text style={ styles.titleText }>Lifter's Log</Text>
           </View>
 
           <View style={styles.getStartedContainer}>
@@ -54,19 +47,6 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText>
-          </View>
-        </View>
       </View>
     </ImageBackground>
   );
@@ -112,9 +92,13 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  titleText: {
+    fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 36,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   developmentModeText: {
     marginBottom: 20,

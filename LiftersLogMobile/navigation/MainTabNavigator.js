@@ -10,7 +10,7 @@ import PlateMathScreen from '../screens/PlateMath'
 import SettingsScreen from '../screens/SettingsScreen';
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
+  web: { headerMode: 'float' },
   default: {},
 });
 

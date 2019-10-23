@@ -1,9 +1,8 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import t from 'tcomb-form-native'
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component'
-import { Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { Table, Row } from 'react-native-table-component'
+
 
 const Form = t.form.Form
 
@@ -14,7 +13,25 @@ const Attributes = t.struct({
   highestPercent: t.Number,
 })
 
-const options = {}
+const options = {
+  fields: {
+    weight: {
+      error: 'Please input a number',
+    },
+    inKilos: {
+    label: 'In Kilos',
+    help: 'Select if above weight is in kgs',
+    },
+    lowestPercent: {
+      label: 'Lowest Percentage',
+      error: 'Please input a number',
+    },
+    highestPercent: {
+      label: 'Highest Percentage',
+      error: 'Please input a number',
+    },
+  }
+}
 
 export default class PercentageFinder extends React.Component {
   constructor(props) {
@@ -53,9 +70,9 @@ export default class PercentageFinder extends React.Component {
   handleTableData = attributes => {
     const { weight, inKilos, lowestPercent, highestPercent } = attributes
     const { weightsKg } = this.state
-    let newWeight = parseInt(weight)
-    let high = parseInt(highestPercent)
-    let low = parseInt(lowestPercent)
+    let newWeight = weight
+    let high = highestPercent
+    let low = lowestPercent
     let tData = []
     let incrementor = high - low > 15 ? 5 : 1
     if (high - low > 0) {
@@ -116,7 +133,7 @@ export default class PercentageFinder extends React.Component {
   }
 
   render() {
-    const tableDisplay = () => {
+    const tableDataDisplay = () => {
       return this.state.tableData.map((rowData, index) => (
         <Row
           key={ index }
@@ -134,10 +151,11 @@ export default class PercentageFinder extends React.Component {
             <Form
               ref="percentageForm"
               type={ Attributes }
+              options={ options }
             />
-            <TouchableHighlight style={ styles.button } onPress={ this.handlePercentFormPress } underlayColor='#99d9f4'>
+            <TouchableOpacity style={ styles.button } onPress={ this.handlePercentFormPress } underlayColor='#99d9f4'>
               <Text style={ styles.buttonText }>Submit</Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         }
         {this.state.displayTable &&
@@ -147,13 +165,13 @@ export default class PercentageFinder extends React.Component {
               <View>
                 <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
                   <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
-                  { tableDisplay() }
+                  { tableDataDisplay() }
                 </Table>
-                <View style={ styles.buttonContainer }>
+                <View style={ styles.buttonsContainer }>
                   <View style={ styles.resetContainer }>
-                    <TouchableHighlight style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
+                    <TouchableOpacity style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
                       <Text style={ styles.buttonText }>Reset</Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   </View>
                   <View style={ styles.kiloContainer }>
                     <Text>Show Kilos</Text>
@@ -170,13 +188,13 @@ export default class PercentageFinder extends React.Component {
               <View>
                 <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
                   <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
-                  { tableDisplay() }
+                  { tableDataDisplay() }
                 </Table>
-                <View style={ styles.buttonContainer }>
+                <View style={ styles.buttonsContainer }>
                   <View style={ styles.resetContainer }>
-                    <TouchableHighlight style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
+                    <TouchableOpacity style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
                       <Text style={ styles.buttonText }>Reset</Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -211,7 +229,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
-  buttonContainer: {
+  buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 20,
