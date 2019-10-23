@@ -40,13 +40,19 @@ export default class PercentageFinder extends React.Component {
   
   handleKiloToggle = value => {
     if (value) {
-      this.handleTableDisplay(this.state.tableData)
+      const { tableData } = this.state
+      this.setState({
+        kilos: !this.state.kilos,
+        tableData: []
+      }, () => {
+        this.handleTableDisplay(tableData, value)
+      })
     }
   }
 
   handleTableData = attributes => {
     const { weight, inKilos, lowestPercent, highestPercent } = attributes
-    const { weightsKg, tableHead, tableData } = this.state
+    const { weightsKg } = this.state
     let newWeight = parseInt(weight)
     let high = parseInt(highestPercent)
     let low = parseInt(lowestPercent)
@@ -67,9 +73,9 @@ export default class PercentageFinder extends React.Component {
     }
   }
 
-  handleTableDisplay = array => {
+  handleTableDisplay = (array, truthy) => {
     const { weightsKg, tableHead, tableData } = this.state
-    if (tableData.length % 2 !== 0) {
+    if (truthy) {
       tableHead.push('Weight (in kgs)')
       let newTData = [].concat(...array)
       let temp = []
@@ -85,7 +91,7 @@ export default class PercentageFinder extends React.Component {
           temp.push(value)
         }
       })
-    } else {
+    } else if (tableData.length === 0) {
       array.map((value, index) => {
         let temp = []
         if (index % 2 === 0) {
@@ -96,7 +102,6 @@ export default class PercentageFinder extends React.Component {
         }
       })
     }
-    this.handleClearForm()
     this.setState({ tableData })
   }
     
@@ -105,7 +110,6 @@ export default class PercentageFinder extends React.Component {
       tableHead: ['Percentage', 'Weight (in lbs)'],
       tableData: [],
     })
-    console.log(this.state.tableData)
   }
 
   render() {
@@ -136,18 +140,28 @@ export default class PercentageFinder extends React.Component {
         {this.state.displayTable &&
         <ScrollView>
           <View style={ styles.tableContainer }>
-            <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-              <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
-              { tableDisplay() }
-            </Table>
-            <View style={ styles.kiloContainer }>
-              <Text>Show Kilos</Text>
-              <Form
-                ref="kiloToggle"
-                type={ t.Boolean }
-                onChange={ this.handleKiloToggle }
-              />
-            </View>
+            {!this.state.kilos &&
+              <View>
+                <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                  <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
+                  { tableDisplay() }
+                </Table>
+                <View style={ styles.kiloContainer }>
+                  <Text>Show Kilos</Text>
+                  <Form
+                    ref="kiloToggle"
+                    type={ t.Boolean }
+                    onChange={ this.handleKiloToggle }
+                  />
+                </View>
+              </View>
+            }
+            {this.state.kilos &&
+              <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
+                { tableDisplay() }
+              </Table>
+            }
           </View>
         </ScrollView>
         }
@@ -195,7 +209,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f8ff'
   },
   tableText: {
-    margin: 6
+    margin: 6,
+    textAlign: 'center',
   },
   row: {
     height: 40,
