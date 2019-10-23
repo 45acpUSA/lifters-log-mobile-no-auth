@@ -105,8 +105,11 @@ export default class PercentageFinder extends React.Component {
     this.setState({ tableData })
   }
     
-  handleClearForm = () => {
+  handleReset = () => {
     this.setState({
+      displayTable: false,
+      kilos: false,
+      weightsKg: [],
       tableHead: ['Percentage', 'Weight (in lbs)'],
       tableData: [],
     })
@@ -146,21 +149,37 @@ export default class PercentageFinder extends React.Component {
                   <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
                   { tableDisplay() }
                 </Table>
-                <View style={ styles.kiloContainer }>
-                  <Text>Show Kilos</Text>
-                  <Form
-                    ref="kiloToggle"
-                    type={ t.Boolean }
-                    onChange={ this.handleKiloToggle }
-                  />
+                <View style={ styles.buttonContainer }>
+                  <View style={ styles.resetContainer }>
+                    <TouchableHighlight style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
+                      <Text style={ styles.buttonText }>Reset</Text>
+                    </TouchableHighlight>
+                  </View>
+                  <View style={ styles.kiloContainer }>
+                    <Text>Show Kilos</Text>
+                    <Form
+                      ref="kiloToggle"
+                      type={ t.Boolean }
+                      onChange={ this.handleKiloToggle }
+                    />
+                  </View>
                 </View>
               </View>
             }
             {this.state.kilos &&
-              <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
-                { tableDisplay() }
-              </Table>
+              <View>
+                <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                  <Row data={ this.state.tableHead } style={ styles.tableHead } textStyle={ styles.tableText } />
+                  { tableDisplay() }
+                </Table>
+                <View style={ styles.buttonContainer }>
+                  <View style={ styles.resetContainer }>
+                    <TouchableHighlight style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
+                      <Text style={ styles.buttonText }>Reset</Text>
+                    </TouchableHighlight>
+                  </View>
+                </View>
+              </View>
             }
           </View>
         </ScrollView>
@@ -192,11 +211,26 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
-  kiloContainer: {
-    justifyContent: 'flex-end',
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     padding: 20,
     backgroundColor: '#ffffff',
-    flexDirection: 'row',
+  },
+  resetButton: {
+    height: 36,
+    backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    borderWidth: 1,
+    borderRadius: 8,
+    justifyContent: 'center',
+  },
+  kiloContainer: {
+    justifyContent: 'flex-end',
+    bottom: 10,
+  },
+  resetContainer: {
+    justifyContent: 'flex-start',
   },
   tableContainer: {
     flex: 1,
