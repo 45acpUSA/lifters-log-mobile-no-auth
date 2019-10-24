@@ -1,6 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { Button, Header } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -37,11 +39,48 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
+const LinksBackButton = (props) => {
+  return (
+    <Button
+      type="clear"
+      icon={
+        <Icon
+          name="arrow-left"
+          size={ 20 }
+          color="white"
+        />
+      }
+      onPress={() => props.nav.goBack()}
+    />
+  )
+}
+
+
 const LinksStack = createStackNavigator(
   {
     Links: LinksScreen,
-    PercentageFinder: PercentageFinderScreen,
-    PlateMath: PlateMathScreen,
+    PercentageFinder: {
+      screen: PercentageFinderScreen,
+      navigationOptions: ({ navigation }) => ({
+        header:
+          <Header
+            backgroundColor='#626263'
+            centerComponent={{ text: 'Mathematical', style: { color: '#fff' } }}
+            leftComponent={ <LinksBackButton nav={ navigation } /> }
+          />
+      })
+    },
+    PlateMath: {
+      screen: PlateMathScreen,
+      navigationOptions: ({ navigation }) => ({
+        header:
+          <Header
+            backgroundColor='#626263'
+            centerComponent={{ text: 'Mathematical', style: { color: '#fff' } }}
+            leftComponent={ <LinksBackButton nav={ navigation } /> }
+          />
+      })
+    }
   },
   config
 );

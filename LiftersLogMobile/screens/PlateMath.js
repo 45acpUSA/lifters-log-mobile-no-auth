@@ -147,7 +147,7 @@ export default class PlateMath extends React.Component {
     return (
       <View>
         {!displayWeights &&
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <View style={ styles.container }>
               <Text h1 style={ styles.usageText }>How to Use:</Text>
               <Text h4 style={ styles.usageText}>1. Look at <Text style={{fontStyle: 'italic'}}>ONE SIDE</Text> of your barbell</Text>
