@@ -110,11 +110,24 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
-});
+const tabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    LinksStack,
+    SettingsStack,
+  },
+  {
+    tabBarOptions: {
+      labelStyle: {
+        fontSize: 12,
+      },
+      style: {
+        backgroundColor: '#626263',
+      },
+    }
+  }
+)
+
 
 tabNavigator.path = '';
 

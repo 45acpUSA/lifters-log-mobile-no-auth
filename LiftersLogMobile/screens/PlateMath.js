@@ -41,19 +41,19 @@ const options = {
       error: 'Please input a number',
     },
     fiftyFives: {
-      label: 'Fifty Fives',
+      label: 'Number of 55 lb / 25 kg plates',
       error: 'Please input a number'
     },
     fortyFives: {
-      label: 'Forty Fives',
+      label: 'Number of 45 lb / 20.5 kg plates',
       error: 'Please input a number',
     },
     thiryFives: {
-      label: 'Thirty Fives',
+      label: 'Number of 35 lb / 16 kg plates',
       error: 'Please input a number',
     },
     twentyFives: {
-      label: 'Twenty Fives',
+      label: 'Number of 25 lb / 11 kg plates',
       error: 'Please input a number',
     },
     fifteens: {
@@ -65,11 +65,11 @@ const options = {
       error: 'Please input a number',
     },
     fives: {
-      label: 'Twenty Fives',
+      label: 'Number of 5 lb / 2.3 kg plates',
       error: 'Please input a number',
     },
     twoPointFives: {
-      label: 'Two and a Halves',
+      label: 'Number of 2.5 lb / 1.1 kg plates',
       error: 'Please input a number',
     },
   }
