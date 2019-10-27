@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
 import { Text, Divider } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -42,7 +42,7 @@ const options = {
     },
     fiftyFives: {
       label: 'Number of 55 lb / 25 kg plates',
-      error: 'Please input a number'
+      error: 'Please input a number',
     },
     fortyFives: {
       label: 'Number of 45 lb / 20.5 kg plates',
@@ -141,13 +141,20 @@ export default class PlateMath extends React.Component {
     })
   }
 
+  handleButtonFocus = () => {
+    Keyboard.dismiss()
+  }
+
 
   render() {
     const { displayWeights, totalPounds, totalKilos } = this.state
     return (
       <View>
         {!displayWeights &&
-          <ScrollView keyboardShouldPersistTaps="handled">
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            onScrollEndDrag={ this.handleButtonFocus }
+          >
             <View style={ styles.container }>
               <Text h1 style={ styles.usageText }>How to Use:</Text>
               <Text h4 style={ styles.usageText}>1. Look at <Text style={{fontStyle: 'italic'}}>ONE SIDE</Text> of your barbell</Text>
@@ -165,14 +172,21 @@ export default class PlateMath extends React.Component {
                 options={ options }
                 value={ defaultValues }
               />
-              <TouchableOpacity style={ styles.button } onPress={ this.handlePlateFormPress } underlayColor='#99d9f4'>
+              <TouchableOpacity
+                style={ styles.button }
+                onPress={ this.handlePlateFormPress }
+                underlayColor='#99d9f4'
+              >
                 <Text style={ styles.buttonText }>Submit</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
         }
         {displayWeights &&
-          <View style={ styles.container }>
+          <View style={ styles.displayContainer }>
+            <View>
+              <Text h3>Total Weight:</Text>
+            </View>
             <View style={{ flexDirection: 'row'}}>
               <View style={ styles.weightContainer }>
                 <Text style={ styles.weightText }>{totalPounds}</Text>
@@ -247,5 +261,11 @@ const styles = StyleSheet.create({
   },
   weightText: {
     fontSize: 30
+  },
+  displayContainer: {
+    justifyContent: 'center',
+    marginTop: 60,
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
 })

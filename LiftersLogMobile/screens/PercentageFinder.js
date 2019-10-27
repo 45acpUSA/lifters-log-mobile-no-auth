@@ -45,6 +45,10 @@ export default class PercentageFinder extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.refs.percentageForm.getComponent('weight').refs.input.focus();
+  }
+
   handlePercentFormPress = () => {
     let values = this.refs.percentageForm.getValue()
     if (values) {

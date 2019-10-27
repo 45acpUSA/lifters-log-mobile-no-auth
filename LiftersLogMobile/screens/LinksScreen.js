@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginRight: 9,
   },
   options: {
-    backgroundColor: '#1b96fa',
+    backgroundColor: '#06259e',
     paddingHorizontal: 15,
     paddingVertical: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     marginTop: 1,
     textAlign: 'center',
+    color: '#fff'
   },
   optionDescriptionContainer: {
     padding: 10
