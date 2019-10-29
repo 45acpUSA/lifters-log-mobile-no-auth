@@ -190,7 +190,7 @@ export default class PlateMath extends React.Component {
           <View>
             <View style={ styles.displayContainer }>
               <View>
-                <Text h3>Total Weight:</Text>
+                <Text h3>Total Weight</Text>
               </View>
               <Text>{'\n'}</Text>
               <View style={{ flexDirection: 'row'}}>
