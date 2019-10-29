@@ -65,7 +65,7 @@ const LinksStack = createStackNavigator(
         header:
           <Header
             backgroundColor='#626263'
-            centerComponent={{ text: 'Mathematical', style: { color: '#fff' } }}
+            centerComponent={{ text: 'Percentage Finder', style: { color: '#fff' } }}
             leftComponent={ <LinksBackButton nav={ navigation } /> }
           />
       })
@@ -76,7 +76,7 @@ const LinksStack = createStackNavigator(
         header:
           <Header
             backgroundColor='#626263'
-            centerComponent={{ text: 'Mathematical', style: { color: '#fff' } }}
+            centerComponent={{ text: 'Plate Math', style: { color: '#fff' } }}
             leftComponent={ <LinksBackButton nav={ navigation } /> }
           />
       })
