@@ -2,6 +2,7 @@ import React from 'react'
 import { View, ScrollView, StyleSheet, Keyboard, TouchableOpacity } from 'react-native'
 import { Text, Divider } from 'react-native-elements'
 import t from 'tcomb-form-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const Form = t.form.Form
 
@@ -48,7 +49,7 @@ const options = {
       label: 'Number of 45 lb / 20.5 kg plates',
       error: 'Please input a number',
     },
-    thiryFives: {
+    thirtyFives: {
       label: 'Number of 35 lb / 16 kg plates',
       error: 'Please input a number',
     },
@@ -141,19 +142,14 @@ export default class PlateMath extends React.Component {
     })
   }
 
-  handleButtonFocus = () => {
-    Keyboard.dismiss()
-  }
-
 
   render() {
     const { displayWeights, totalPounds, totalKilos } = this.state
     return (
       <View>
         {!displayWeights &&
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            onScrollEndDrag={ this.handleButtonFocus }
+          <KeyboardAwareScrollView
+            onScrollEndDrag={() => Keyboard.dismiss()}
           >
             <View style={ styles.container }>
               <Text h1 style={ styles.usageText }>How to Use:</Text>
@@ -180,21 +176,25 @@ export default class PlateMath extends React.Component {
                 <Text style={ styles.buttonText }>Submit</Text>
               </TouchableOpacity>
             </View>
-          </ScrollView>
+          </KeyboardAwareScrollView>
         }
         {displayWeights &&
-          <View style={ styles.displayContainer }>
-            <View>
-              <Text h3>Total Weight:</Text>
-            </View>
-            <View style={{ flexDirection: 'row'}}>
-              <View style={ styles.weightContainer }>
-                <Text style={ styles.weightText }>{totalPounds}</Text>
+          <View>
+            <View style={ styles.displayContainer }>
+              <View>
+                <Text h3>Total Weight:</Text>
               </View>
-              <View style={ styles.weightContainer }>
-                <Text style={ styles.weightText }>{totalKilos}</Text>
+              <Text>{'\n'}</Text>
+              <View style={{ flexDirection: 'row'}}>
+                <View style={ styles.weightContainer }>
+                  <Text style={ styles.weightText }>{totalPounds} lbs</Text>
+                </View>
+                <View style={ styles.weightContainer }>
+                  <Text style={ styles.weightText }>{totalKilos} kgs</Text>
+                </View>
               </View>
             </View>
+            <Text>{'\n'}</Text>
             <View>
               <TouchableOpacity style={ styles.resetButton } onPress={ this.handleReset } underlayColor='#99d9f4'>
                 <Text style={ styles.buttonText }>Reset</Text>
@@ -256,13 +256,16 @@ const styles = StyleSheet.create({
   },
   weightContainer: {
     borderWidth: 1,
-    borderColor: 'blue',
-    padding: 20
+    backgroundColor: '#06259e',
+    padding: 20,
+    margin: 20
   },
   weightText: {
-    fontSize: 30
+    fontSize: 30,
+    color: '#fff'
   },
   displayContainer: {
+    alignItems: 'center',
     justifyContent: 'center',
     marginTop: 60,
     padding: 20,
