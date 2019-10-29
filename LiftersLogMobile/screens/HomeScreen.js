@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Linking,
   View,
 } from 'react-native';
 
@@ -28,8 +29,14 @@ export default function HomeScreen() {
               <Text style={{ fontStyle: 'italic', color: '#fff' }}> YOUR </Text>
               help! {'\n'}
               {'\n'}
-              On this project's web page, there is an option to leave comments. {'\n'}
-              <Text style={{ fontWeight: 'bold', color: '#fff' }}> USE IT! </Text> {"\n"}
+              If you have comments about this app, feel free to email me at: {'\n'}
+              <Text
+                style={{ fontWeight: 'bold', color: '#fff' }}
+                onPress={() => Linking.openURL(`mailto:mattauthedev@gmail.com`)}
+              >
+                mattauthedev@gmail.com
+              </Text>
+              {"\n"}
               If these comments include feedback or suggestions, please make sure to thoroughly explain yourself. {'\n'}
               {'\n'}
               {'\n'}
