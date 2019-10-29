@@ -44,34 +44,42 @@ const options = {
     fiftyFives: {
       label: 'Number of 55 lb / 25 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     fortyFives: {
       label: 'Number of 45 lb / 20.5 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     thirtyFives: {
       label: 'Number of 35 lb / 16 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     twentyFives: {
       label: 'Number of 25 lb / 11 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     fifteens: {
       label: 'Number of 15 lb / 7 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     tens: {
       label: 'Number of 10 lb / 4.5 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     fives: {
       label: 'Number of 5 lb / 2.3 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
     twoPointFives: {
       label: 'Number of 2.5 lb / 1.1 kg plates',
       error: 'Please input a number',
+      selectTextOnFocus: true
     },
   }
 }
